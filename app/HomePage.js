@@ -46,10 +46,11 @@ class SearchBar extends Component {
 export default class Home extends Component {
     constructor(){
         super();
-        var ds = new ListView.DataSource({rowHasChanged:(r1,r2) => r1 !== r2});
+        var dataSource = new ListView.DataSource({rowHasChanged:(r1,r2) => r1 !== r2});
         this.state = {
-            dataSource: ds.cloneWithRows(this._genRows({})),
-             autoPlayImgData: [],
+            //dataSource: ds.cloneWithRows(this._genRows({})),
+            dataSource: dataSource,
+            autoPlayImgData: [],
         }
         //必须绑定,否则onPress报错
         this._renderRow = this._renderRow.bind(this);
@@ -93,7 +94,7 @@ export default class Home extends Component {
         }
         this.setState({
             autoPlayImgData:imgData,
-            
+            dataSource: this.state.dataSource.cloneWithRows(listViewData)
         });
     }
     _renderHeader(){

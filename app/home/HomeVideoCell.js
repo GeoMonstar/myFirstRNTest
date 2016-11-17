@@ -25,9 +25,9 @@ class HomeVideoCell extends Component {
         onPress={this.props.onSelect}
         underlayColor='#F5FCFF'>
         <View style={styles.cellView}>
-            <Image style={styles.topImage} source={require('../../image/tupian.png')}/>
-            <Text style={styles.firstText}>测试标题测试标题</Text>
-            <Text style={styles.secondText}>测试详情测试详情</Text>
+            <Image style={styles.topImage} source={{uri:rowData.imgsrc}}/>
+            <Text style={styles.firstText}>{rowData.title}</Text>
+            
         </View>
       </TouchableHighlight>
 		);
@@ -52,6 +52,7 @@ var styles = StyleSheet.create({
   firstText:{
       color:'black',
       fontSize: 12, 
+      height:40,
   },
   secondText:{
       color:'#999',
