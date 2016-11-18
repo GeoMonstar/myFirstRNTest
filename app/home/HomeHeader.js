@@ -7,33 +7,35 @@ import {
     ListView,
     TouchableOpacity,
     Dimensions,
-    ScrollView
+    ScrollView,
+    DeviceEventEmitter,
 } from 'react-native';
-
 const width = Dimensions.get('window').width;
 const DURATION = 2500;
 
 export default class HomeHeaderComponent extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             currentPage: 0,
             title: this.props.imgData[0].title
+
         };
     }
     componentDidMount() {
         this._startTimer();
     }
-
     componentWillUnmount() {
         clearInterval(this.interval);
     }
-
+    _selectImage(){
+        DeviceEventEmitter.emit('change',this.props.imgData[this.state.currentPage].url)
+    }
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView
+                <TouchableOpacity onPress={() =>this._selectImage()}>
+                    <ScrollView
                     ref="scrollView"
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -41,9 +43,11 @@ export default class HomeHeaderComponent extends Component {
                     onMomentumScrollEnd={(scrollView)=>this.onAnimationEnd(scrollView)}
                     onScrollBeginDrag={this.onScrollBeginDrag.bind(this)}
                     onScrollEndDrag={this.onScrollEndDrag.bind(this)}
-                >
-                {this._renderImage()}
-                </ScrollView>
+                     >
+                     {this._renderImage()}
+                     </ScrollView>
+                 </TouchableOpacity>
+               
                 <View style={styles.indicatorViewStyle}>
                     <Text style={styles.textIndicatorStyle}>{this.state.title}</Text>
                     <View style={styles.circelIndicatorStyle}>
@@ -53,8 +57,6 @@ export default class HomeHeaderComponent extends Component {
             </View>
         );
     }
-
-   
     _startTimer() {
 
         this.interval = setInterval(()=> {
@@ -85,6 +87,7 @@ export default class HomeHeaderComponent extends Component {
         for (var i in imgData) {
             let imgItemData = imgData[i];
             imgArr.push(
+                
                 <Image
                     key={i}
                     source={{uri: imgItemData.imgsrc}}

@@ -12,9 +12,9 @@ import {
     PixelRatio,
     Navigator,
     Dimensions,
+    DeviceEventEmitter,
 } from 'react-native'
 import HomeHeader   from './home/HomeHeader';
-import HomeData     from './home/HomeData';
 import HomeCell     from './home/HomeVideoCell';
 import HomeDetail   from './home/HomeDetail';
 
@@ -57,9 +57,6 @@ export default class Home extends Component {
         this._renderHeader = this._renderHeader.bind(this);
     }
     
-    
-    
-    
     componentWillMount() {
          fetch(URL).then((response)=>response.json()).then((jsonData)=> {
             this._handleJsonData(jsonData[KEYWORD]);
@@ -68,6 +65,12 @@ export default class Home extends Component {
             //TODO 网络访问失败
         });
     }
+    componentDidMount() {
+        DeviceEventEmitter.addListener('change',(text)=>{
+            alert(text);
+        })
+    }
+    
     selectRow(rowDetailData){
 		const { navigator } = this.props;
 		if(navigator) {
@@ -100,7 +103,9 @@ export default class Home extends Component {
     _renderHeader(){
         if (this.state.autoPlayImgData.length == 0)return;
         return (
-            <HomeHeader imgData={this.state.autoPlayImgData}/>
+            <HomeHeader imgData={this.state.autoPlayImgData}
+                        />
+
         );
     }
     _renderRow(rowData,sectionID,rowID){
@@ -119,7 +124,6 @@ export default class Home extends Component {
         // var homeHeader = <HomeHeader imgData={this.state.autoPlayImgData}/>;
         var resultList =
       <ListView
-       
         contentContainerStyle={styles.list }
 		automaticallyAdjustContentInsets={false}
         dataSource={this.state.dataSource}
@@ -167,7 +171,6 @@ const styles = StyleSheet.create({
         alignItems:      'center',
     },
     list:{
-        flex:1,
         justifyContent: 'space-around',
         flexDirection: 'row',
         flexWrap: 'wrap',
